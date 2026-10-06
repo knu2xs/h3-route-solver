@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "h3-route-solver"
+
+version = "0.0.0"
+
+authors = [
+  { name="Joel McCune"},
+]
+
+description = "ArcPy-free Python library and MCP server for querying precomputed sparse H3 origin-destination network costs with bounded off-network stretch."
+
+readme = "README.md"
+
+requires-python = ">=3.9"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+
+license = {text = "Apache-2.0"}
+
+
+dependencies = [
+    "arcgis>=2.2.0",
+    "numpy>=1.7",
+    "pandas>=1.0.5",
+    "pyarrow>=1.0.0",
+    # "arcpy-parquet @ git+https://github.com/knu2xs/arcpy-parquet.git",
+    
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["h3_route_solver*"]
+
+[tool.setuptools.package-data]
+"h3_route_solver.sql" = ["*.sql"]
