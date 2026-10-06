@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.pyt,arcgis/**/*.py,src/**/*.py,scripts/**/*.py"
+applyTo: "**/*.pyt,arcgis/**/*.py,scripts/**/*.py"
 ---
 
 <!-- Generated from AGENTS.md by post_gen_project.py — do not edit directly. -->
@@ -7,18 +7,19 @@ applyTo: "**/*.pyt,arcgis/**/*.py,src/**/*.py,scripts/**/*.py"
 - Prefer `arcpy.da.UpdateCursor` over older cursor methods for better performance
 - Use generator expressions to feed values into cursors when possible
 - Always clean up cursors using `with` statements, `del` statements, or as context managers
-- When calling arcpy tools, use the convention `arcpy.toolbox.Toolname` instead of 
-  `arcpy.Toolname_toolbox`, and use named parameters for clarity and forward compatibility
+- When calling arcpy tools, use the convention `arcpy.toolbox.Toolname`, such as
+  `arcpy.analysis.Buffer`, rather than `arcpy.Buffer_analysis`; use named parameters for
+  clarity and forward compatibility
 
 #### 7.3 Intermediate Data Management
 
-**For small datasets (< tens of thousands of features)**:
+**For datasets with fewer than 50,000 features**:
 
 - Use the `memory` workspace for intermediate outputs: `memory/datasetname`
 - Provides fastest performance for small to moderate datasets
 - No cleanup required as data is automatically released
 
-**For large datasets (≥ tens of thousands of features)**:
+**For datasets with 50,000 or more features**:
 
 - Use the `@with_temp_fgdb` decorator from `h3_route_solver.utils` —
   implemented in `src/h3_route_solver/utils/_data.py` and included by default
@@ -26,6 +27,8 @@ applyTo: "**/*.pyt,arcgis/**/*.py,src/**/*.py,scripts/**/*.py"
 - Automatically sets `arcpy.env.workspace` to a temporary file geodatabase for the duration of
   the function, then deletes all intermediate data and the workspace on exit (even on error)
 - Prevents memory issues with large intermediate datasets
+- When the dataset size cannot be determined in advance, default to the `@with_temp_fgdb`
+  decorator to avoid memory issues
 
 ```python
 from h3_route_solver.utils import with_temp_fgdb

@@ -44,7 +44,7 @@ The rules most often violated. The full rationale is below.
 - **Config**: Read settings via `config.*` and `secrets.*` singletons. Never hardcode paths, WKIDs, or credentials.
 - **Secrets**: Never commit `config/secrets.yml`. Add new keys to `secrets_template.yml` too.
 - **Data**: `data/raw/` is read-only. Write outputs to `data/interim/` or `data/processed/`.
-- **ArcPy**: Call as `arcpy.toolbox.Toolname(...)` with named parameters. Use `with_temp_fgdb` for large intermediates.
+- **ArcPy**: Never in `src/h3_route_solver/`. In `arcgis/` and `scripts/` only, call as `arcpy.toolbox.Toolname(...)` with named parameters.
 - **SQL/DuckDB**: Externalise non-trivial queries to `src/h3_route_solver/sql/*.sql`. Always use bind parameters — never f-string interpolation.
 - **Tests**: Mirror `src/` layout in `testing/`. One behavior per test. Use fixtures from `conftest.py`.
 - **Scope**: Don't refactor unrelated code. Don't rename or change signatures of public symbols without approval.
@@ -60,6 +60,21 @@ When working in this project:
 - ArcGIS Pro toolboxes are in `arcgis/` and reference `h3_route_solver` for shared logic
 - Tests live in `testing/` and follow the naming convention `test_*.py`
 - Configuration is loaded from `config/config.yml`; secrets belong in `config/secrets.yml` (gitignored)
+
+### Spec-Driven Development
+
+- This project is governed by [.specify/memory/constitution.md](.specify/memory/constitution.md).
+  It supersedes this file where they conflict; read it before planning or implementing a feature.
+- Features are built with Spec Kit skills: `/speckit-specify` -> `/speckit-clarify` ->
+  `/speckit-plan` -> `/speckit-tasks` -> `/speckit-analyze` -> `/speckit-implement`.
+  Feature artifacts live in `specs/NNN-feature-name/`.
+- Design inputs (vision, architecture, data contract, roadmap, feature drafts) are in
+  `docsrc/mkdocs/design/`. The data contract is shared with
+  [h3-route-data-builder](https://github.com/knu2xs/h3-route-data-builder); do not change it unilaterally.
+- **The `h3_route_solver` package must never import ArcPy.** It must stay pip installable on any
+  platform. ArcPy guidance below applies only to `arcgis/` and `scripts/`.
+- Optional integrations (MCP, GeoPandas) belong in `[project.optional-dependencies]` extras and
+  must be imported lazily.
 
 ---
 
@@ -344,7 +359,7 @@ Prefer `conda-forge` or `esri` channels for conda packages. Use the `pip:` block
 
 #### 7.2 ArcPy Performance
 
-<!-- copilot:instruction name="arcpy" applyTo="**/*.pyt,arcgis/**/*.py,src/**/*.py,scripts/**/*.py" -->
+<!-- copilot:instruction name="arcpy" applyTo="**/*.pyt,arcgis/**/*.py,scripts/**/*.py" -->
 
 - Prefer `arcpy.da.UpdateCursor` over older cursor methods for better performance
 - Use generator expressions to feed values into cursors when possible

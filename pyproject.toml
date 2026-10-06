@@ -16,24 +16,40 @@ description = "ArcPy-free Python library and MCP server for querying precomputed
 
 readme = "README.md"
 
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: Apache Software License",
+    "Topic :: Scientific/Engineering :: GIS",
 ]
+
+keywords = ["h3", "routing", "origin-destination", "geoparquet", "mcp"]
 
 
 license = {text = "Apache-2.0"}
 
 
 dependencies = [
-    "arcgis>=2.2.0",
+    "duckdb>=1.0",
+    "h3>=4.0",
     "numpy>=1.7",
     "pandas>=1.0.5",
-    "pyarrow>=1.0.0",
-    # "arcpy-parquet @ git+https://github.com/knu2xs/arcpy-parquet.git",
-    
+    "pyarrow>=14.0",
+    "pyyaml>=6.0",
 ]
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0"]
+geo = ["geopandas>=0.14"]
+dev = ["pytest>=7.0", "black>=24.0"]
+
+[project.urls]
+Homepage = "https://github.com/knu2xs/h3-route-solver"
+Documentation = "https://knu2xs.github.io/h3-route-solver"
+Issues = "https://github.com/knu2xs/h3-route-solver/issues"
+DataBuilder = "https://github.com/knu2xs/h3-route-data-builder"
 
 [tool.setuptools.packages.find]
 where = ["src"]

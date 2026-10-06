@@ -5,14 +5,25 @@ site_dir: ../docs
 
 nav:
   - Home: index.md
+  - Design:
+      - Product Vision: design/00-product-vision.md
+      - Shared Constitution: design/01-shared-constitution.md
+      - System Architecture: design/02-system-architecture.md
+      - Data Contract: design/03-data-contract.md
+      - Test Strategy: design/09-test-strategy.md
+      - Roadmap: design/10-roadmap.md
+      - Solver Features:
+          - Dataset Catalog and Resolution: design/solver/001-dataset-catalog-and-resolution.md
+          - OD and Proximity API: design/solver/002-od-and-proximity-api.md
+          - MCP Server: design/solver/003-mcp-server.md
+          - Performance and Deployment: design/solver/004-performance-and-deployment.md
   - Configuration: configuration.md
   - API: api.md
   - Cookiecutter Reference: cookiecutter_reference.md
 
 
-# add a GitHub repo link to the top navigation bar
-# repo_url: https://github.com/<github_organization>/<github_project_name>
-# repo_name: <project_name>
+repo_url: https://github.com/knu2xs/h3-route-solver
+repo_name: h3-route-solver
 
 
 theme:
